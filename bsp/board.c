@@ -48,11 +48,6 @@ static int uart_init(void)
 {
     MX_USART1_UART_Init();
     MX_USART2_UART_Init();
-    MX_USART3_UART_Init();
-    MX_UART4_Init();
-    MX_UART5_Init();
-    MX_USART6_UART_Init();
-    MX_UART7_Init();
     return 0;
 }
 INIT_BOARD_EXPORT(uart_init);
@@ -100,16 +95,16 @@ void rt_hw_log_output(const char *str)
     rt_size_t i = 0, size = 0;
     char a = '\r';
 
-    __HAL_UNLOCK(&huart6);
+    __HAL_UNLOCK(&huart2);
 
     size = rt_strlen(str);
     for (i = 0; i < size; i++)
     {
         if (*(str + i) == '\n')
         {
-            HAL_UART_Transmit(&huart6, (uint8_t *)&a, 1, 1);
+            HAL_UART_Transmit(&huart2, (uint8_t *)&a, 1, 1);
         }
-        HAL_UART_Transmit(&huart6, (uint8_t *)(str + i), 1, 1);
+        HAL_UART_Transmit(&huart2, (uint8_t *)(str + i), 1, 1);
     }
 }
 
