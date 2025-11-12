@@ -1,6 +1,4 @@
 #include <board.h>
-#include <rthw.h>
-#include <rtthread.h>
 
 #if defined(RT_USING_USER_MAIN) && defined(RT_USING_HEAP)
 RT_WEAK void *rt_heap_begin_get(void)
@@ -16,13 +14,6 @@ RT_WEAK void *rt_heap_end_get(void)
 }
 #endif
 
-void rt_os_tick_callback(void)
-{
-    rt_interrupt_enter();
-    rt_tick_increase();
-    rt_interrupt_leave();
-}
-
 void rt_hw_board_init(void)
 {
     MPU_Config();
@@ -33,6 +24,7 @@ void rt_hw_board_init(void)
     SystemCoreClockUpdate();
     HAL_SYSTICK_Config(HAL_RCC_GetSysClockFreq() / RT_TICK_PER_SECOND);
     MX_GPIO_Init();
+    MX_FMC_Init();
 
 #ifdef RT_USING_COMPONENTS_INIT
     rt_components_board_init();

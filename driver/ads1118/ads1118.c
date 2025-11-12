@@ -55,7 +55,7 @@ void ads1118_init(void)
 
     ADS1118_UINT8_TYPE rx_data[4] = {0};
     ads1118_gpio_cs_reset();
-    HAL_SPI_TransmitReceive(&hspi3, tx_data, rx_data, 4, 10);
+    ads1118_spi_transmit_receive(tx_data, rx_data, 4);
     ads1118_gpio_cs_set();
     ADS1118_LOG_INTERFACE("rx_data:0x%X%X%X%X\n", rx_data[0], rx_data[1],
                           rx_data[2], rx_data[3]);
@@ -69,7 +69,7 @@ void ads1118_set_channel(ADS1118_UINT8_TYPE channel)
     tx_data[0] = ((ADS1118_UINT16_TYPE)value >> 8) & 0x00FF;
     tx_data[1] = (ADS1118_UINT16_TYPE)value & 0x00FF;
     ads1118_gpio_cs_reset();
-    HAL_SPI_Transmit(&hspi3, tx_data, 2, 10);
+    ads1118_spi_transmit(tx_data, 2);
     ads1118_gpio_cs_set();
 }
 

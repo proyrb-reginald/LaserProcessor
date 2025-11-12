@@ -5,8 +5,11 @@
 #include <main.h>
 #include <gpio.h>
 #include <usart.h>
+#include <fmc.h>
+#include <rthw.h>
+#include <rtthread.h>
+#include <sdram.h>
 
-extern void rt_os_tick_callback(void);
 extern int rt_lprintf(const char *fmt, ...);
 
 #endif

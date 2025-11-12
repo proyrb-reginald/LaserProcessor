@@ -47,28 +47,24 @@ inline void mcp4728_i2c_transmit(MCP4728_UINT8_TYPE addr,
                                  MCP4728_UINT8_TYPE *data,
                                  MCP4728_UINT16_TYPE size)
 {
-    // #warning "Please implement the i2c transmit function!"
-    HAL_I2C_Master_Transmit(&hi2c1, addr, data, size, 10);
+#warning "Please implement the i2c transmit function!"
 }
 
 inline void mcp4728_i2c_receive(MCP4728_UINT8_TYPE addr,
                                 MCP4728_UINT8_TYPE *data,
                                 MCP4728_UINT16_TYPE size)
 {
-    // #warning "Please implement the i2c receive function!"
-    HAL_I2C_Master_Receive(&hi2c1, addr, data, size, 10);
+#warning "Please implement the i2c receive function!"
 }
 
 inline void mcp4728_gpio_ldac_set(void)
 {
-    // #warning "Please implement the gpio ldac write function!"
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, GPIO_PIN_SET);
+#warning "Please implement the gpio ldac write function!"
 }
 
 inline void mcp4728_gpio_ldac_reset(void)
 {
-    // #warning "Please implement the gpio ldac write function!"
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, GPIO_PIN_RESET);
+#warning "Please implement the gpio ldac write function!"
 }
 
 /* 导出接口 */

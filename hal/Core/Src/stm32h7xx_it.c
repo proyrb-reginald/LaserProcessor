@@ -87,7 +87,8 @@ void NMI_Handler(void)
 void MemManage_Handler(void)
 {
   /* USER CODE BEGIN MemoryManagement_IRQn 0 */
-
+    rt_interrupt_enter();
+    rt_lprintf("MemoryManagement_IRQn\n");
   /* USER CODE END MemoryManagement_IRQn 0 */
   while (1)
   {
@@ -158,7 +159,9 @@ void DebugMon_Handler(void)
 void SysTick_Handler(void)
 {
   /* USER CODE BEGIN SysTick_IRQn 0 */
-    rt_os_tick_callback();
+    rt_interrupt_enter();
+    rt_tick_increase();
+    rt_interrupt_leave();
   /* USER CODE END SysTick_IRQn 0 */
 
   /* USER CODE BEGIN SysTick_IRQn 1 */

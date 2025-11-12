@@ -28,30 +28,33 @@
 #define ADS1118_DELAY_INTERFACE rt_thread_mdelay
 
 /* 接口实现 */
+inline void ads1118_spi_transmit_receive(ADS1118_UINT8_TYPE *t_data,
+                                         ADS1118_UINT8_TYPE *r_data,
+                                         ADS1118_UINT16_TYPE size)
+{
+#warning "Please implement the spi transmit receive function!"
+}
+
 inline void ads1118_spi_transmit(ADS1118_UINT8_TYPE *data,
                                  ADS1118_UINT16_TYPE size)
 {
-    // #warning "Please implement the spi transmit function!"
-    HAL_SPI_Transmit(&hspi3, data, size, 10);
+#warning "Please implement the spi transmit function!"
 }
 
 inline void ads1118_spi_receive(ADS1118_UINT8_TYPE *data,
                                 ADS1118_UINT16_TYPE size)
 {
-    // #warning "Please implement the spi receive function!"
-    HAL_SPI_Receive(&hspi3, data, size, 10);
+#warning "Please implement the spi receive function!"
 }
 
 inline void ads1118_gpio_cs_set(void)
 {
-    // #warning "Please implement the gpio cs write function!"
-    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_SET);
+#warning "Please implement the gpio cs write function!"
 }
 
 inline void ads1118_gpio_cs_reset(void)
 {
-    // #warning "Please implement the gpio cs write function!"
-    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET);
+#warning "Please implement the gpio cs write function!"
 }
 
 /* 导出接口 */
