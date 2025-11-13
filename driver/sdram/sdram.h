@@ -30,39 +30,6 @@
 #define SDRAM_ADDR ((SDRAM_UINT8_TYPE *)(0xC0000000))
 #define SDRAM_SIZE ((SDRAM_UINT32_TYPE)(32 * 1024 * 1024))
 
-/* 接口导出与实现 */
-inline void sdram_send_cmd(SDRAM_UINT32_TYPE cmd_mode, SDRAM_UINT32_TYPE bank,
-                           SDRAM_UINT32_TYPE refresh_cnt,
-                           SDRAM_UINT32_TYPE reg_val)
-{
-    // #warning "Please implement the sdram send cmd function!"
-    FMC_SDRAM_CommandTypeDef cmd;
-    cmd.CommandMode = cmd_mode;
-    if (bank == 1) {
-        cmd.CommandTarget = FMC_SDRAM_CMD_TARGET_BANK1;
-    } else if (bank == 2) {
-        cmd.CommandTarget = FMC_SDRAM_CMD_TARGET_BANK2;
-    }
-    cmd.AutoRefreshNumber      = refresh_cnt;
-    cmd.ModeRegisterDefinition = reg_val;
-    HAL_SDRAM_SendCommand(&hsdram1, &cmd, 10);
-}
-
-inline void sdram_read_data(SDRAM_UINT32_TYPE rel_addr, SDRAM_UINT8_TYPE *buf,
-                            SDRAM_UINT32_TYPE buf_size)
-{
-    // #warning "Please implement the sdram read data function!"
-    HAL_SDRAM_Read_8b(&hsdram1, (SDRAM_UINT32_TYPE *)(SDRAM_ADDR + rel_addr),
-                      buf, buf_size);
-}
-
-inline void sdram_write_data(SDRAM_UINT32_TYPE rel_addr, SDRAM_UINT8_TYPE *buf,
-                             SDRAM_UINT32_TYPE buf_size)
-{
-    // #warning "Please implement the sdram read data function!"
-    HAL_SDRAM_Write_8b(&hsdram1, (SDRAM_UINT32_TYPE *)(SDRAM_ADDR + rel_addr),
-                       buf, buf_size);
-}
 
 void sdram_init(void);
 

@@ -4,12 +4,10 @@
 
 void thread_test(void *parameter)
 {
-    sdram_init(); // SDRAM设备初始化
     while (1)
     {
-        rt_lprintf("sdram test\n");
         sdram_test();
-        rt_thread_mdelay(500);
+        rt_thread_mdelay(1000);
     }
 }
 
