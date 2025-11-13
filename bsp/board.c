@@ -17,8 +17,8 @@ RT_WEAK void *rt_heap_end_get(void)
 void rt_hw_board_init(void)
 {
     MPU_Config();
-    SCB_EnableICache();
-    SCB_EnableDCache();
+    // SCB_EnableICache();
+    // SCB_EnableDCache();
     HAL_Init();
     SystemClock_Config();
     SystemCoreClockUpdate();
