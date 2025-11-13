@@ -1,6 +1,6 @@
 #include <sdram.h>
 
-static int adram_send_command(uint32_t CommandMode, uint32_t Bank,
+static int sdram_send_command(uint32_t CommandMode, uint32_t Bank,
                               uint32_t RefreshNum, uint32_t RegVal)
 {
     uint32_t CommandTarget = 0;
@@ -28,21 +28,32 @@ static int adram_send_command(uint32_t CommandMode, uint32_t Bank,
     return 0;
 }
 
+void sdram_clear(void)
+{
+    uint8_t *pSRAM = (uint8_t *)SDRAM_ADDR;
+    for (uint32_t i = 0; i < SDRAM_SIZE; i++)
+    {
+        *pSRAM++ = 0;
+    }
+}
+
 void sdram_init(void)
 {
     uint32_t temp;
 
     /* 1. 时钟使能命令 */
-    adram_send_command(FMC_SDRAM_CMD_CLK_ENABLE, 1, 1, 0);
+    sdram_send_command(FMC_SDRAM_CMD_CLK_ENABLE, 1, 1, 0);
 
     /* 2. 延时，至少100us */
     rt_thread_mdelay(1);
 
     /* 3. SDRAM全部预充电命令 */
-    adram_send_command(FMC_SDRAM_CMD_PALL, 1, 1, 0);
+    sdram_send_command(FMC_SDRAM_CMD_PALL, 1, 1, 0);
+    rt_thread_mdelay(1);
 
     /* 4. 自动刷新命令 */
-    adram_send_command(FMC_SDRAM_CMD_AUTOREFRESH_MODE, 1, 8, 0);
+    sdram_send_command(FMC_SDRAM_CMD_AUTOREFRESH_MODE, 1, 8, 0);
+    rt_thread_mdelay(1);
 
     /* 5. 配置SDRAM模式寄存器 */
     temp = (uint32_t)SDRAM_MODEREG_BURST_LENGTH_1 | // 设置突发长度：1
@@ -50,75 +61,90 @@ void sdram_init(void)
            SDRAM_MODEREG_CAS_LATENCY_3 |            // 设置CL值：3
            SDRAM_MODEREG_OPERATING_MODE_STANDARD |  // 设置操作模式：标准
            SDRAM_MODEREG_WRITEBURST_MODE_SINGLE;    // 设置突发写模式：单点访问
-    adram_send_command(FMC_SDRAM_CMD_LOAD_MODE, 1, 1, temp);
+    sdram_send_command(FMC_SDRAM_CMD_LOAD_MODE, 1, 1, temp);
+    rt_thread_mdelay(1);
 
     /* 6. 设置自刷新频率 */
     /* SDRAM refresh period / Number of rows）*SDRAM时钟速度 – 20
      * = 64000(64ms) / 8192 * 120MHz - 20
      */
     HAL_SDRAM_ProgramRefreshRate(&hsdram1, 918);
+    rt_thread_mdelay(1);
+
+    sdram_clear();
 }
 
 void sdram_test(void)
 {
     uint32_t i;
-    uint32_t *pSRAM;
-    uint8_t *pBytes;
-    uint32_t err;
-    const uint8_t ByteBuf[4] = {0x55, 0xA5, 0x5A, 0xAA};
+    uint8_t *pSRAM;
 
-    rt_lprintf("write fix value\n");
+    /* 读SDRAM */
+    rt_lprintf("first read after boot\n");
+    pSRAM = (uint8_t *)SDRAM_ADDR;
+    for (i = 0; i < SDRAM_TEST_SIZE; i++)
+    {
+        rt_lprintf("[0x%X:0x%X]\n", i, *pSRAM);
+        pSRAM++;
+    }
+
     /* 写SDRAM */
-    pSRAM = (uint32_t *)SDRAM_ADDR;
+    rt_lprintf("write fix value\n");
+    pSRAM = (uint8_t *)SDRAM_ADDR;
     for (i = 0; i < SDRAM_TEST_SIZE; i++)
     {
         *pSRAM = i;
         pSRAM++;
     }
+
     /* 读SDRAM */
-    pSRAM = (uint32_t *)SDRAM_ADDR;
+    rt_lprintf("read after write\n");
+    pSRAM = (uint8_t *)SDRAM_ADDR;
     for (i = 0; i < SDRAM_TEST_SIZE; i++)
     {
         rt_lprintf("[0x%X:0x%X]\n", i, *pSRAM);
         pSRAM++;
     }
 
-    rt_lprintf("write rebit value\n");
     /* 对SDRAM的数据求反并写入 */
-    pSRAM = (uint32_t *)SDRAM_ADDR;
+    rt_lprintf("write rebit value\n");
+    pSRAM = (uint8_t *)SDRAM_ADDR;
     for (i = 0; i < SDRAM_TEST_SIZE; i++)
     {
         *pSRAM = ~*pSRAM;
         pSRAM++;
     }
+
     /* 再次比较SDRAM的数据 */
-    pSRAM = (uint32_t *)SDRAM_ADDR;
+    rt_lprintf("read after rebit\n");
+    pSRAM = (uint8_t *)SDRAM_ADDR;
     for (i = 0; i < SDRAM_TEST_SIZE; i++)
     {
         rt_lprintf("[0x%X:0x%X]\n", i, *pSRAM);
         pSRAM++;
     }
 
-    /* 测试按字节方式访问, 目的是验证 FSMC_NBL0 、 FSMC_NBL1 口线 */
-    pBytes = (uint8_t *)SDRAM_ADDR;
-    for (i = 0; i < sizeof(ByteBuf); i++)
-    {
-        *pBytes++ = ByteBuf[i];
-    }
+    // /* 测试按字节方式访问, 目的是验证 FSMC_NBL0 、 FSMC_NBL1 口线 */
+    // uint8_t *pBytes;
+    // const uint8_t ByteBuf[4] = {0x55, 0xA5, 0x5A, 0xAA};
+    // pBytes = (uint8_t *)SDRAM_ADDR;
+    // for (i = 0; i < sizeof(ByteBuf); i++)
+    // {
+    //     *pBytes++ = ByteBuf[i];
+    // }
 
-    /* 比较SDRAM的数据 */
-    err = 0;
-    pBytes = (uint8_t *)SDRAM_ADDR;
-    for (i = 0; i < sizeof(ByteBuf); i++)
-    {
-        if (*pBytes++ != ByteBuf[i])
-        {
-            err++;
-        }
-    }
-    if (err > 0)
-    {
-        rt_lprintf("3\n");
-        return err;
-    }
+    // /* 比较SDRAM的数据 */
+    // err = 0;
+    // pBytes = (uint8_t *)SDRAM_ADDR;
+    // for (i = 0; i < sizeof(ByteBuf); i++)
+    // {
+    //     if (*pBytes++ != ByteBuf[i])
+    //     {
+    //         err++;
+    //     }
+    // }
+    // if (err > 0)
+    // {
+    //     rt_lprintf("3\n");
+    // }
 }

@@ -10,7 +10,7 @@
 #include ADS1118_RTOS_INC
 
 #define SDRAM_ADDR      ((uint32_t)0xC0000000)
-#define SDRAM_SIZE      (32 * 1024 * 1024)
+#define SDRAM_SIZE      ((uint32_t)(32 * 1024 * 1024))
 #define SDRAM_TEST_SIZE 16
 
 /* SDRAM配置参数 */
