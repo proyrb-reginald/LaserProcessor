@@ -25,7 +25,6 @@ void rt_hw_board_init(void)
     HAL_SYSTICK_Config(HAL_RCC_GetSysClockFreq() / RT_TICK_PER_SECOND);
     MX_GPIO_Init();
     MX_FMC_Init();
-    sdram_init(); // SDRAM设备初始化
 
 #ifdef RT_USING_COMPONENTS_INIT
     rt_components_board_init();

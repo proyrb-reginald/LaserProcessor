@@ -22,6 +22,13 @@ targets:
     cppPreprocessAttrs:
       defineList:
         - STM32H743xx
+        - HAL_INC=<stm32h7xx_hal.h>
+        - BSP_INC=<board.h>
+        - RTOS_INC=<rtthread.h>
+        - LOG_INTERFACE=rt_lprintf
+        - USE_LOG=1
+        - DELAY_MS_INTERFACE=rt_thread_mdelay
+        - USE_TEST=1
       incList:
         - app
         - bsp
