@@ -42,15 +42,15 @@ targets:
         - driver/ads1118
         - driver/dacx0502
         - driver/mcp4728
-        - driver/wks80hd002
+        - driver/lcd
         - driver/sdram
       libList: []
     excludeList:
       - app/app_cmd.c
-      - driver/wks80hd002
       - driver/mcp4728
       - driver/dacx0502
       - driver/ads1118
+      - driver/wks80hd002
     toolchain: GCC
     toolchainConfigMap:
       GCC:

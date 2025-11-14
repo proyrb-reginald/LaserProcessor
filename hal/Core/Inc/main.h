@@ -58,6 +58,14 @@ void MPU_Config(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define LED_RED_Pin GPIO_PIN_0
+#define LED_RED_GPIO_Port GPIOB
+#define LED_GREEN_Pin GPIO_PIN_1
+#define LED_GREEN_GPIO_Port GPIOB
+#define LCD_RST_Pin GPIO_PIN_11
+#define LCD_RST_GPIO_Port GPIOD
+#define BL_CTR_Pin GPIO_PIN_12
+#define BL_CTR_GPIO_Port GPIOD
 
 /* USER CODE BEGIN Private defines */
 

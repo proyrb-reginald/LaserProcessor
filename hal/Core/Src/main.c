@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "ltdc.h"
 #include "usart.h"
 #include "gpio.h"
 #include "fmc.h"
@@ -205,7 +206,6 @@ void MPU_Config(void)
   MPU_InitStruct.Number = MPU_REGION_NUMBER6;
   MPU_InitStruct.BaseAddress = 0xC0000000;
   MPU_InitStruct.Size = MPU_REGION_SIZE_32MB;
-  MPU_InitStruct.IsCacheable = MPU_ACCESS_CACHEABLE;
   MPU_InitStruct.IsBufferable = MPU_ACCESS_BUFFERABLE;
 
   HAL_MPU_ConfigRegion(&MPU_InitStruct);

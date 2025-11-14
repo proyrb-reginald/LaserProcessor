@@ -45,7 +45,6 @@ void sdram_init(void)
 {
     /* 时钟使能命令 */
     sdram_send_cmd(FMC_SDRAM_CMD_CLK_ENABLE, 1, 1, 0);
-    DELAY_MS_INTERFACE(1);
 
     /* SDRAM全部预充电命令 */
     sdram_send_cmd(FMC_SDRAM_CMD_PALL, 1, 1, 0);
@@ -91,16 +90,17 @@ void sdram_write_data(uint32_t rel_addr, uint8_t *buf, uint32_t buf_size)
 }
 
 #if USE_TEST
-#define SDRAM_TEST_SIZE 32
+#define SDRAM_TEST_SIZE 1024
 
-__attribute__((section(".sdram.sdram"))) uint8_t sdram_data[SDRAM_TEST_SIZE];
-
-void sdram_test(void)
+void sdram_test_8b(void)
 {
+    static __attribute__((
+        section(".sdram.sdram"))) uint8_t sdram_data[SDRAM_TEST_SIZE];
+
     sdram_clear();
 
     LOG_INTERFACE("=====[first read]=====\n");
-    SCB_InvalidateDCache_by_Addr(sdram_data, SDRAM_TEST_SIZE);
+    // SCB_InvalidateDCache_by_Addr(sdram_data, SDRAM_TEST_SIZE);
     for (uint32_t i = 0; i < SDRAM_TEST_SIZE; i++)
     {
         LOG_INTERFACE("0x%X > 0x%X\n", &(sdram_data[i]), sdram_data[i]);
@@ -110,10 +110,61 @@ void sdram_test(void)
     {
         sdram_data[i] = i;
     }
-    SCB_CleanDCache_by_Addr((uint32_t *)sdram_data, SDRAM_TEST_SIZE);
+    // SCB_CleanDCache_by_Addr((uint32_t *)sdram_data, SDRAM_TEST_SIZE);
 
     LOG_INTERFACE("=====[read after write]=====\n");
-    SCB_InvalidateDCache_by_Addr(sdram_data, SDRAM_TEST_SIZE);
+    // SCB_InvalidateDCache_by_Addr(sdram_data, SDRAM_TEST_SIZE);
+    for (uint32_t i = 0; i < SDRAM_TEST_SIZE; i++)
+    {
+        LOG_INTERFACE("0x%X > 0x%X\n", &(sdram_data[i]), sdram_data[i]);
+    }
+
+    rt_thread_mdelay(3000);
+
+    LOG_INTERFACE("=====[read after 3s]=====\n");
+    // SCB_InvalidateDCache_by_Addr(sdram_data, SDRAM_TEST_SIZE);
+    for (uint32_t i = 0; i < SDRAM_TEST_SIZE; i++)
+    {
+        LOG_INTERFACE("0x%X > 0x%X\n", &(sdram_data[i]), sdram_data[i]);
+    }
+
+    while (1)
+    {
+        rt_thread_mdelay(1000);
+    }
+}
+
+void sdram_test_16b(void)
+{
+    static __attribute__((
+        section(".sdram.sdram"))) uint16_t sdram_data[SDRAM_TEST_SIZE];
+
+    sdram_clear();
+
+    LOG_INTERFACE("=====[first read]=====\n");
+    // SCB_InvalidateDCache_by_Addr(sdram_data, SDRAM_TEST_SIZE);
+    for (uint32_t i = 0; i < SDRAM_TEST_SIZE; i++)
+    {
+        LOG_INTERFACE("0x%X > 0x%X\n", &(sdram_data[i]), sdram_data[i]);
+    }
+
+    for (uint32_t i = 0; i < SDRAM_TEST_SIZE; i++)
+    {
+        sdram_data[i] = i;
+    }
+    // SCB_CleanDCache_by_Addr((uint32_t *)sdram_data, SDRAM_TEST_SIZE);
+
+    LOG_INTERFACE("=====[read after write]=====\n");
+    // SCB_InvalidateDCache_by_Addr(sdram_data, SDRAM_TEST_SIZE);
+    for (uint32_t i = 0; i < SDRAM_TEST_SIZE; i++)
+    {
+        LOG_INTERFACE("0x%X > 0x%X\n", &(sdram_data[i]), sdram_data[i]);
+    }
+
+    rt_thread_mdelay(3000);
+
+    LOG_INTERFACE("=====[read after 3s]=====\n");
+    // SCB_InvalidateDCache_by_Addr(sdram_data, SDRAM_TEST_SIZE);
     for (uint32_t i = 0; i < SDRAM_TEST_SIZE; i++)
     {
         LOG_INTERFACE("0x%X > 0x%X\n", &(sdram_data[i]), sdram_data[i]);

@@ -1,28 +1,28 @@
 /* USER CODE BEGIN Header */
 /**
-  ******************************************************************************
-  * File Name          : FMC.c
-  * Description        : This file provides code for the configuration
-  *                      of the FMC peripheral.
-  ******************************************************************************
-  * @attention
-  *
-  * Copyright (c) 2025 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
-  *
-  ******************************************************************************
-  */
+ ******************************************************************************
+ * File Name          : FMC.c
+ * Description        : This file provides code for the configuration
+ *                      of the FMC peripheral.
+ ******************************************************************************
+ * @attention
+ *
+ * Copyright (c) 2025 STMicroelectronics.
+ * All rights reserved.
+ *
+ * This software is licensed under terms that can be found in the LICENSE file
+ * in the root directory of this software component.
+ * If no LICENSE file comes with this software, it is provided AS-IS.
+ *
+ ******************************************************************************
+ */
 /* USER CODE END Header */
 
 /* Includes ------------------------------------------------------------------*/
 #include "fmc.h"
 
 /* USER CODE BEGIN 0 */
-
+#include <sdram.h>
 /* USER CODE END 0 */
 
 SDRAM_HandleTypeDef hsdram1;
@@ -69,7 +69,7 @@ void MX_FMC_Init(void)
   }
 
   /* USER CODE BEGIN FMC_Init 2 */
-
+    sdram_init(); // SDRAM设备初始化
   /* USER CODE END FMC_Init 2 */
 }
 

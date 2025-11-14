@@ -8,7 +8,9 @@ void sdram_init(void);
 void sdram_clear(void);
 
 #if USE_TEST
-void sdram_test(void);
+/* 测试SDRAM设备 */
+void sdram_test_8b(void);
+void sdram_test_16b(void);
 #endif
 
 #endif

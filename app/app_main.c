@@ -1,13 +1,14 @@
 #include <board.h>
+#include <lcd.h>
 #include <rtthread.h>
 #include <sdram.h>
 
 void thread_test(void *parameter)
 {
-    sdram_init(); // SDRAM设备初始化
     while (1)
     {
-        sdram_test();
+        // sdram_test_16b();
+        lcd_test();
     }
 }
 
@@ -35,8 +36,8 @@ int main(void)
 
     while (1)
     {
-        HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_0);
-        HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_1);
-        rt_thread_mdelay(500);
+        HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
+        HAL_GPIO_TogglePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
+        DELAY_MS_INTERFACE(500);
     }
 }

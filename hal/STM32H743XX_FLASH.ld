@@ -174,8 +174,14 @@ SECTIONS
 
   .sdram(NOLOAD) : ALIGN(8)
   {
+    PROVIDE(_lcd_buf_0 = .);
+    *(.sdram.lcd.0)
+
+    PROVIDE(_lcd_buf_1 = .);
+    *(.sdram.lcd.1)
+
     PROVIDE(_sdram_start = .);
-    *(.sdram.*)
+    *(.sdram.sdram)
   } > SDRAM
 
   /DISCARD/ :
