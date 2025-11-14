@@ -11,6 +11,7 @@
 #include <rtthread.h>
 #include <sdram.h>
 #include <ltdc.h>
+#include <dma2d.h>
 
 extern int rt_lprintf(const char *fmt, ...);
 

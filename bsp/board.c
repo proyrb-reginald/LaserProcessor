@@ -26,6 +26,7 @@ void rt_hw_board_init(void)
     MX_GPIO_Init();
     MX_FMC_Init();
     MX_LTDC_Init();
+    MX_DMA2D_Init();
 
 #ifdef RT_USING_COMPONENTS_INIT
     rt_components_board_init();
